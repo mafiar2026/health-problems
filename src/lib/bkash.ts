@@ -36,7 +36,7 @@ async function refreshToken(refresh_token: string) {
     throw new Error('Refresh token failed')
   }
 
-  const expiresAt = new Date(Date.now() + (data.expires_in - 60) * 1000)
+  const expiresAt:any = new Date(Date.now() + (data.expires_in - 60) * 1000)
 
   // 🧹 clean old token
   await payload.delete({
@@ -110,7 +110,7 @@ export async function grantToken() {
   }
 
   // ⏱ expiresIn from bKash is seconds
-  const expiresAt = new Date(
+  const expiresAt:any = new Date(
     Date.now() + (data.expires_in - 60) * 1000, // 1 min buffer
   )
 

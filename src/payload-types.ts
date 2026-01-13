@@ -59,555 +59,530 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji'
+  | 'Pacific/Fiji';
 
 export interface Config {
   auth: {
-    users: UserAuthOperations
-  }
-  blocks: {}
+    users: UserAuthOperations;
+  };
+  blocks: {};
   collections: {
-    users: User
-    media: Media
-    'product-landing': ProductLanding
-    'bkash-tokens': BkashToken
-    'bkash-payments': BkashPayment
-    booking: Booking
-    'delivery-charge': DeliveryCharge
-    'payload-kv': PayloadKv
-    'payload-locked-documents': PayloadLockedDocument
-    'payload-preferences': PayloadPreference
-    'payload-migrations': PayloadMigration
-  }
-  collectionsJoins: {}
+    users: User;
+    media: Media;
+    'product-landing': ProductLanding;
+    'bkash-tokens': BkashToken;
+    'bkash-payments': BkashPayment;
+    booking: Booking;
+    'delivery-charge': DeliveryCharge;
+    'payload-kv': PayloadKv;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>
-    media: MediaSelect<false> | MediaSelect<true>
-    'product-landing': ProductLandingSelect<false> | ProductLandingSelect<true>
-    'bkash-tokens': BkashTokensSelect<false> | BkashTokensSelect<true>
-    'bkash-payments': BkashPaymentsSelect<false> | BkashPaymentsSelect<true>
-    booking: BookingSelect<false> | BookingSelect<true>
-    'delivery-charge': DeliveryChargeSelect<false> | DeliveryChargeSelect<true>
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
-    'payload-locked-documents':
-      | PayloadLockedDocumentsSelect<false>
-      | PayloadLockedDocumentsSelect<true>
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
-  }
+    users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    'product-landing': ProductLandingSelect<false> | ProductLandingSelect<true>;
+    'bkash-tokens': BkashTokensSelect<false> | BkashTokensSelect<true>;
+    'bkash-payments': BkashPaymentsSelect<false> | BkashPaymentsSelect<true>;
+    booking: BookingSelect<false> | BookingSelect<true>;
+    'delivery-charge': DeliveryChargeSelect<false> | DeliveryChargeSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
   db: {
-    defaultIDType: string
-  }
-  fallbackLocale: null
-  globals: {}
-  globalsSelect: {}
-  locale: null
+    defaultIDType: string;
+  };
+  fallbackLocale: null;
+  globals: {};
+  globalsSelect: {};
+  locale: null;
   user: User & {
-    collection: 'users'
-  }
+    collection: 'users';
+  };
   jobs: {
-    tasks: unknown
-    workflows: unknown
-  }
+    tasks: unknown;
+    workflows: unknown;
+  };
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   login: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   registerFirstUser: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   unlock: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string
-  updatedAt: string
-  createdAt: string
-  email: string
-  resetPasswordToken?: string | null
-  resetPasswordExpiration?: string | null
-  salt?: string | null
-  hash?: string | null
-  loginAttempts?: number | null
-  lockUntil?: string | null
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
   sessions?:
     | {
-        id: string
-        createdAt?: string | null
-        expiresAt: string
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
       }[]
-    | null
-  password?: string | null
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string
-  alt: string
-  cloudinaryPublicId?: string | null
-  cloudinaryUrl?: string | null
-  cloudinaryResourceType?: string | null
-  cloudinaryFormat?: string | null
-  cloudinaryVersion?: number | null
-  /**
-   * Direct URL to the original file without transformations
-   */
-  originalUrl?: string | null
-  /**
-   * URL with applied transformations
-   */
-  transformedUrl?: string | null
-  updatedAt: string
-  createdAt: string
-  url?: string | null
-  thumbnailURL?: string | null
-  filename?: string | null
-  mimeType?: string | null
-  /**
-   * File size in bytes
-   */
-  filesize?: number | null
-  width?: number | null
-  height?: number | null
-  focalX?: number | null
-  focalY?: number | null
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "product-landing".
  */
 export interface ProductLanding {
-  id: string
-  productName: string
-  slug: string
+  id: string;
+  productName: string;
+  slug: string;
   hero: {
-    title: string
-    subtitle?: string | null
-    mainImage: (string | Media)[]
-  }
+    title: string;
+    subtitle?: string | null;
+    mainImage: (string | Media)[];
+  };
   specialPricing?:
     | {
-        value: string
-        title: string
-        price: number
-        description?: string | null
-        offerPrice?: number | null
-        highlight?: boolean | null
-        id?: string | null
+        value: string;
+        title: string;
+        price: number;
+        description?: string | null;
+        offerPrice?: number | null;
+        highlight?: boolean | null;
+        id?: string | null;
       }[]
-    | null
+    | null;
   pricing?:
     | {
         /**
          * Internal pricing identifier (e.g. combo_1, combo_2)
          */
-        pricingId: string
-        label: string
-        price: number
-        description?: string | null
-        saving?: string | null
+        pricingId: string;
+        label: string;
+        price: number;
+        description?: string | null;
+        saving?: string | null;
         sizes: {
-          size?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null
-          id?: string | null
-        }[]
-        id?: string | null
+          size?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
       }[]
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-tokens".
  */
 export interface BkashToken {
-  id: string
-  accessToken: string
-  refreshToken: string
-  expiresIn: number | Date
-  // expiresIn: number | Date;
-  createdAt: string
-  updatedAt: string
+  id: string;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: string;
+  createdAt: string;
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-payments".
  */
 export interface BkashPayment {
-  id: string
-  paymentID: string
-  product: string | ProductLanding
+  id: string;
+  paymentID: string;
+  product: string | ProductLanding;
   /**
    * pricing.pricingId from ProductLanding
    */
-  pricingId: string
-  size?: string | null
-  amount?: number | null
-  currency?: string | null
-  merchantInvoiceNo?: string | null
-  payerReference?: string | null
-  trxID?: string | null
-  transactionStatus?: ('Initiated' | 'Pending' | 'Completed' | 'Failed' | 'Error') | null
-  user?: string | null
+  pricingId: string;
+  size?: string | null;
+  amount?: number | null;
+  currency?: string | null;
+  merchantInvoiceNo?: string | null;
+  payerReference?: string | null;
+  trxID?: string | null;
+  transactionStatus?: ('Initiated' | 'Pending' | 'Completed' | 'Failed' | 'Error') | null;
+  user?: string | null;
   customerInfo?:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "booking".
  */
 export interface Booking {
-  id: string
-  bookingId: string
-  product: string | ProductLanding
+  id: string;
+  bookingId: string;
+  product: string | ProductLanding;
   /**
    * pricing.pricingId from ProductLanding
    */
-  pricingId: string
-  size?: string | null
-  amount?: number | null
-  currency?: string | null
-  merchantInvoiceNo?: string | null
-  payerReference?: string | null
-  paymentStatus?: ('Pending' | 'Completed' | 'Failed') | null
-  user?: string | null
+  pricingId: string;
+  size?: string | null;
+  amount?: number | null;
+  currency?: string | null;
+  merchantInvoiceNo?: string | null;
+  payerReference?: string | null;
+  paymentStatus?: ('Pending' | 'Completed' | 'Failed') | null;
+  user?: string | null;
   customerInfo?:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "delivery-charge".
  */
 export interface DeliveryCharge {
-  id: string
-  deliveryCharge: number
-  updatedAt: string
-  createdAt: string
+  id: string;
+  deliveryCharge: number;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string
-  key: string
+  id: string;
+  key: string;
   data:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string
+  id: string;
   document?:
     | ({
-        relationTo: 'users'
-        value: string | User
+        relationTo: 'users';
+        value: string | User;
       } | null)
     | ({
-        relationTo: 'media'
-        value: string | Media
+        relationTo: 'media';
+        value: string | Media;
       } | null)
     | ({
-        relationTo: 'product-landing'
-        value: string | ProductLanding
+        relationTo: 'product-landing';
+        value: string | ProductLanding;
       } | null)
     | ({
-        relationTo: 'bkash-tokens'
-        value: string | BkashToken
+        relationTo: 'bkash-tokens';
+        value: string | BkashToken;
       } | null)
     | ({
-        relationTo: 'bkash-payments'
-        value: string | BkashPayment
+        relationTo: 'bkash-payments';
+        value: string | BkashPayment;
       } | null)
     | ({
-        relationTo: 'booking'
-        value: string | Booking
+        relationTo: 'booking';
+        value: string | Booking;
       } | null)
     | ({
-        relationTo: 'delivery-charge'
-        value: string | DeliveryCharge
-      } | null)
-  globalSlug?: string | null
+        relationTo: 'delivery-charge';
+        value: string | DeliveryCharge;
+      } | null);
+  globalSlug?: string | null;
   user: {
-    relationTo: 'users'
-    value: string | User
-  }
-  updatedAt: string
-  createdAt: string
+    relationTo: 'users';
+    value: string | User;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string
+  id: string;
   user: {
-    relationTo: 'users'
-    value: string | User
-  }
-  key?: string | null
+    relationTo: 'users';
+    value: string | User;
+  };
+  key?: string | null;
   value?:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string
-  name?: string | null
-  batch?: number | null
-  updatedAt: string
-  createdAt: string
+  id: string;
+  name?: string | null;
+  batch?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T
-  createdAt?: T
-  email?: T
-  resetPasswordToken?: T
-  resetPasswordExpiration?: T
-  salt?: T
-  hash?: T
-  loginAttempts?: T
-  lockUntil?: T
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
   sessions?:
     | T
     | {
-        id?: T
-        createdAt?: T
-        expiresAt?: T
-      }
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  alt?: T
-  cloudinaryPublicId?: T
-  cloudinaryUrl?: T
-  cloudinaryResourceType?: T
-  cloudinaryFormat?: T
-  cloudinaryVersion?: T
-  originalUrl?: T
-  transformedUrl?: T
-  updatedAt?: T
-  createdAt?: T
-  url?: T
-  thumbnailURL?: T
-  filename?: T
-  mimeType?: T
-  filesize?: T
-  width?: T
-  height?: T
-  focalX?: T
-  focalY?: T
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "product-landing_select".
  */
 export interface ProductLandingSelect<T extends boolean = true> {
-  productName?: T
-  slug?: T
+  productName?: T;
+  slug?: T;
   hero?:
     | T
     | {
-        title?: T
-        subtitle?: T
-        mainImage?: T
-      }
+        title?: T;
+        subtitle?: T;
+        mainImage?: T;
+      };
   specialPricing?:
     | T
     | {
-        value?: T
-        title?: T
-        price?: T
-        description?: T
-        offerPrice?: T
-        highlight?: T
-        id?: T
-      }
+        value?: T;
+        title?: T;
+        price?: T;
+        description?: T;
+        offerPrice?: T;
+        highlight?: T;
+        id?: T;
+      };
   pricing?:
     | T
     | {
-        pricingId?: T
-        label?: T
-        price?: T
-        description?: T
-        saving?: T
+        pricingId?: T;
+        label?: T;
+        price?: T;
+        description?: T;
+        saving?: T;
         sizes?:
           | T
           | {
-              size?: T
-              id?: T
-            }
-        id?: T
-      }
-  updatedAt?: T
-  createdAt?: T
+              size?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-tokens_select".
  */
 export interface BkashTokensSelect<T extends boolean = true> {
-  accessToken?: T
-  refreshToken?: T
-  expiresIn?: T
-  createdAt?: T
-  updatedAt?: T
+  accessToken?: T;
+  refreshToken?: T;
+  expiresIn?: T;
+  createdAt?: T;
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-payments_select".
  */
 export interface BkashPaymentsSelect<T extends boolean = true> {
-  paymentID?: T
-  product?: T
-  pricingId?: T
-  size?: T
-  amount?: T
-  currency?: T
-  merchantInvoiceNo?: T
-  payerReference?: T
-  trxID?: T
-  transactionStatus?: T
-  user?: T
-  customerInfo?: T
-  updatedAt?: T
-  createdAt?: T
+  paymentID?: T;
+  product?: T;
+  pricingId?: T;
+  size?: T;
+  amount?: T;
+  currency?: T;
+  merchantInvoiceNo?: T;
+  payerReference?: T;
+  trxID?: T;
+  transactionStatus?: T;
+  user?: T;
+  customerInfo?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "booking_select".
  */
 export interface BookingSelect<T extends boolean = true> {
-  bookingId?: T
-  product?: T
-  pricingId?: T
-  size?: T
-  amount?: T
-  currency?: T
-  merchantInvoiceNo?: T
-  payerReference?: T
-  paymentStatus?: T
-  user?: T
-  customerInfo?: T
-  updatedAt?: T
-  createdAt?: T
+  bookingId?: T;
+  product?: T;
+  pricingId?: T;
+  size?: T;
+  amount?: T;
+  currency?: T;
+  merchantInvoiceNo?: T;
+  payerReference?: T;
+  paymentStatus?: T;
+  user?: T;
+  customerInfo?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "delivery-charge_select".
  */
 export interface DeliveryChargeSelect<T extends boolean = true> {
-  deliveryCharge?: T
-  updatedAt?: T
-  createdAt?: T
+  deliveryCharge?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T
-  data?: T
+  key?: T;
+  data?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T
-  globalSlug?: T
-  user?: T
-  updatedAt?: T
-  createdAt?: T
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T
-  key?: T
-  value?: T
-  updatedAt?: T
-  createdAt?: T
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T
-  batch?: T
-  updatedAt?: T
-  createdAt?: T
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown
+  [k: string]: unknown;
 }
+
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}

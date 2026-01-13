@@ -30,11 +30,7 @@ export default function HeroSection({ page }: { page: any }) {
         {/* Header with countdown */}
         <header className="header-section">
           <div className="main-header">
-            <div className="subtitle">💫 বয়স ধরে রাখার বৈজ্ঞানিক কৌশল</div>
-            <h1 className="main-title">
-              বিজ্ঞান বলছে —<br />
-              বয়স থামানো সম্ভব!
-            </h1>
+            <h1 className="main-title">যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline</h1>
             <p className="header-description">
               🔬 নিজের বয়স ১০ বছর পর্যন্ত কমিয়ে ফেলুন বৈজ্ঞানিক পদ্ধতিতে। তরুন থাকা এখন আর শুধু
               ইচ্ছার ব্যাপার নয় — এটা একটি প্রমাণিত কৌশল!
@@ -65,7 +61,32 @@ export default function HeroSection({ page }: { page: any }) {
           </div>
         </header>
       </div>
-      <div>hu</div>
+      <div>
+        {' '}
+        <div className="glass-card p-8 floating-element">
+          <div className="bg-gradient-to-br from-secondary to-primary rounded-2xl p-8 text-center">
+            <svg
+              className="w-32 h-32 mx-auto mb-4 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2v0zm0 0V5a2 2 0 012-2h6l2 2h6a2 2 0 012 2v2M7 13h10l-4-8H7l4 8z"
+              />
+            </svg>
+
+            <h3 className="text-2xl font-bold mb-2 bengali-text">
+              যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline
+            </h3>
+
+            <p className="text-gray-200 bengali-text">PDF + JPG + AutoCAD ফরম্যাট</p>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

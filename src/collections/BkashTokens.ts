@@ -24,7 +24,7 @@ const BkashTokens: CollectionConfig = {
     },
     {
       name: 'expiresIn',
-      type: 'number',
+      type: 'date',
       required: true,
     },
     {
