@@ -11,16 +11,32 @@
     font-weight: 700;
   }
 } */
+@theme {
+  --color-primary: rgb(4, 131, 64);
+  --color-secondary: #8b7355;
+  --color-accent: #ffd23f;
+  --color-checkoutBg: #142220;
+}
 
 :root {
-  --primary: #1a1a1a;
+  --primary: rgb(4, 131, 64);
   --secondary: #8b7355;
-  --accent: #d4af37;
+  --accent: #ffd23f;
   --light: #f8f6f3;
   --white: #ffffff;
   --danger: #dc3545;
+  --checkoutBg: #142220;
+  color: white;
 }
 
+/* .to-accent {
+  --tw-gradient-to:  var(--tw-gradient-to-position);
+}
+.from-primary {
+  --tw-gradient-from:  var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(4 131 64 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+} */
 /* .toast-notification {
   position: fixed;
   bottom: 25px;
@@ -98,11 +114,38 @@
 
 } */
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .hero-bg {
   background: linear-gradient(-45deg, #0a0e27, #1a1f3a, rgb(4, 131, 64), #252b4f);
   background-size: auto;
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
+}
+
+.bengali-text {
+  font-family: 'SolaimanLipi', 'Kalpurush', Arial, sans-serif;
+  line-height: 1.8;
 }
 
 .glass-card:hover {
@@ -129,4 +172,62 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.25);
+}
 
+.price-highlight {
+  background: linear-gradient(135deg, #ff6b35, #ffd23f);
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.countdown-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(4, 131, 64, 0.5);
+}
+.countdown-box {
+  background: linear-gradient(135deg, rgb(4, 131, 64), #ffd23f);
+  border-radius: 12px;
+  padding: 15px;
+  min-width: 70px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(4, 131, 64, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-dark-light {
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 31 58 / var(--tw-bg-opacity, 1));
+}
+
+.bg-dark {
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 14 39 / var(--tw-bg-opacity, 1));
+}
+
+.text-center {
+  text-align: center;
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgb(4, 131, 64), #ffd23f);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}

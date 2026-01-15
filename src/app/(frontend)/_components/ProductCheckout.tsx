@@ -17,33 +17,36 @@ import { useEffect, useState } from 'react'
 
 export default function ProductCheckout({ page }: { page: any }) {
   const data = page?.pricing
+  console.log('data', data)
   const [variant, setVariant] = useState(data[0])
   // console.log('variant', variant)
   const [payment, setPayment] = useState<'partial' | 'full' | 'pickup'>('partial')
-  const [deliveryCharge, setDeliveryCharge] = useState(50)
+  const [deliveryCharge, setDeliveryCharge] = useState(99)
   const [loading, setLoading] = useState(false)
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
     address: '',
     phone: '',
+    email: '',
   })
   const [errors, setErrors] = useState<{
     name?: string
     address?: string
     phone?: string
+    email?: string
   }>({})
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const deliveryCharge = await fetch(`/getDeliveryCharge`)
-        const deliveryChargeData = await deliveryCharge.json()
-        setDeliveryCharge(deliveryChargeData)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     try {
+  //       const deliveryCharge = await fetch(`/getDeliveryCharge`)
+  //       const deliveryChargeData = await deliveryCharge.json()
+  //       setDeliveryCharge(deliveryChargeData)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   })()
+  // }, [])
 
   const DELIVERY_CHARGE = deliveryCharge
   const total =
@@ -52,8 +55,8 @@ export default function ProductCheckout({ page }: { page: any }) {
       : payment === 'partial'
         ? DELIVERY_CHARGE
         : 0
-  
-  const fullPrice = variant.price + DELIVERY_CHARGE
+
+  const fullPrice = 499
 
   // Function to hash sensitive data (required by Facebook CAPI)
   const hashData = (data: string): string => {
@@ -164,7 +167,7 @@ export default function ProductCheckout({ page }: { page: any }) {
     }
   }
 
-  const validateField = (field: 'name' | 'address' | 'phone', value: string) => {
+  const validateField = (field: 'name' | 'address' | 'phone' | 'email', value: string) => {
     switch (field) {
       case 'name':
         if (!value.trim()) return 'Name is required'
@@ -175,6 +178,10 @@ export default function ProductCheckout({ page }: { page: any }) {
       case 'phone':
         if (!value.trim()) return 'Mobile number is required'
         if (!/^01\d{9}$/.test(value)) return 'Enter a valid 11-digit Bangladeshi number'
+        return undefined
+      case 'email':
+        if (!value.trim()) return 'Email is required'
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address'
         return undefined
       default:
         return undefined
@@ -189,9 +196,10 @@ export default function ProductCheckout({ page }: { page: any }) {
         name: validateField('name', customerInfo.name),
         address: validateField('address', customerInfo.address),
         phone: validateField('phone', customerInfo.phone),
+        email: validateField('email', customerInfo.email),
       }
 
-      if (newErrors.name || newErrors.address || newErrors.phone) {
+      if (newErrors.name || newErrors.address || newErrors.phone || newErrors.email) {
         setErrors(newErrors)
         setLoading(false)
         return
@@ -266,30 +274,33 @@ export default function ProductCheckout({ page }: { page: any }) {
     customerInfo.name && customerInfo.address && /^01\d{9}$/.test(customerInfo.phone)
 
   return (
-    <div className="w-[95%] pb-10 bg-white mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 px-6 borer rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden">
+    <div className="w-[95%] pb-10 bg-transparent mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 px-6 borer rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden">
       {/* LEFT */}
       <div className="lg:col-span-2 space-y-10 py-3">
         {/* Variants */}
         <section>
-          <h2 className="text-3xl font-semibold mb-4 pt-5.5">Select Your Product</h2>
+          <h2 className="text-3xl font-semibold mb-4 pt-5.5">Product</h2>
           <div className="space-y-3">
-            {data.map((v: any) => (
-              <label key={v.id} className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="variant"
-                  checked={variant.id === v.id}
-                  onChange={() => setVariant(v)}
-                />
-                <span className="flex-1">{v.label}</span>
-                <span className="font-medium">৳{v.price}</span>
-              </label>
-            ))}
+            {/* {data.map((v: any) => ( */}
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="radio"
+                name="variant"
+                checked={true}
+                // checked={variant.id === v.id}
+                // onChange={() => setVariant(v)}
+              />
+              <span className="flex-1">
+                যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline × 1
+              </span>
+              <span className="font-medium">৳{variant.price}</span>
+            </label>
+            {/* ))} */}
           </div>
         </section>
 
         {/* Sizes */}
-        <section>
+        {/* <section>
           <h2 className="text-xl font-semibold mb-3">Select Size</h2>
           <select
             value={variant.size || variant.sizes?.[0].size}
@@ -305,18 +316,18 @@ export default function ProductCheckout({ page }: { page: any }) {
           <p className="text-sm text-gray-500 mt-1">
             Hold Ctrl (Windows) or Cmd (Mac) to select multiple sizes
           </p>
-        </section>
+        </section> */}
 
         {/* Delivery Info */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold">Enter Your Delivery Information</h2>
+          <h2 className="text-xl font-semibold">এনরোলের জন্য আপনার তথ্য দিন</h2>
           <label className="font-semibold" htmlFor="name">
-            Your Full Name
+            আপনার নাম লিখুন
           </label>
           <input
             id="name"
             className={`w-full border rounded p-3 mt-2 ${errors.name ? 'border-red-500' : ''}`}
-            placeholder="Enter Your Full Name"
+            placeholder="সম্পূর্ণ নাম লিখুন"
             value={customerInfo.name}
             onChange={(e) => {
               const value = e.target.value
@@ -328,13 +339,13 @@ export default function ProductCheckout({ page }: { page: any }) {
           {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
 
           <label className="font-semibold" htmlFor="address">
-            Delivery Address
+            আপনার ঠিকানা লিখুন
           </label>
 
           <input
             id="address"
             className={`w-full border rounded p-3 mt-2 ${errors.address ? 'border-red-500' : ''}`}
-            placeholder="House, Road, Area, District"
+            placeholder="বাড়ির নাম্বার, রোড, উপজেলা, জেলা"
             value={customerInfo.address}
             onChange={(e) => {
               const value = e.target.value
@@ -346,7 +357,7 @@ export default function ProductCheckout({ page }: { page: any }) {
           {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
 
           <label className="font-semibold" htmlFor="mobile">
-            Mobile Number
+            আপনার মোবাইল নাম্বর লিখুন{' '}
           </label>
           <input
             id="mobile"
@@ -361,6 +372,23 @@ export default function ProductCheckout({ page }: { page: any }) {
           />
 
           {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+
+          <label className="font-semibold" htmlFor="email">
+            আপনার ইমেইল লিখুন
+          </label>
+          <input
+            id="email"
+            className={`w-full border rounded p-3 mt-2 ${errors.email ? 'border-red-500' : ''}`}
+            placeholder="your@email.com"
+            value={customerInfo.email}
+            onChange={(e) => {
+              const value = e.target.value
+              setCustomerInfo({ ...customerInfo, email: value })
+              setErrors({ ...errors, email: validateField('email', value) })
+            }}
+          />
+
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </section>
       </div>
 
@@ -374,7 +402,7 @@ export default function ProductCheckout({ page }: { page: any }) {
               <span>Subtotal</span>
             </div>
             <div className="flex justify-between">
-              <span>{variant.label}</span>
+              <span>যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline × 1</span>
               <span>৳{variant.price}</span>
             </div>
 
@@ -383,10 +411,10 @@ export default function ProductCheckout({ page }: { page: any }) {
               <span>Subtotal</span>
               <span>৳{variant.price}</span>
             </div>
-            <div className="flex justify-between font-semibold">
+            {/* <div className="flex justify-between font-semibold">
               <span>Steadfast Parcel Payment</span>
               <span>৳{DELIVERY_CHARGE}</span>
-            </div>
+            </div> */}
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
               <span>৳{total}</span>
@@ -394,15 +422,15 @@ export default function ProductCheckout({ page }: { page: any }) {
           </div>
 
           {/* COD */}
-          <div className="bg-gray-50 p-4 rounded">
+          {/* <div className="bg-gray-50 p-4 rounded">
             <h4 className="font-semibold text-lg">Cash on Parcel</h4>
             <p className="text-sm text-gray-600 leading-relaxed mt-2">
               Pay after receiving the product. COP charge may vary based on location.
             </p>
-          </div>
+          </div> */}
 
           {/* Payment Method */}
-          <div>
+          {/* <div>
             <p className="font-medium mb-2">Payment Method</p>
             <div className="border rounded p-3 space-y-2">
               <label className="flex items-center gap-2">
@@ -438,7 +466,7 @@ export default function ProductCheckout({ page }: { page: any }) {
                 Full Payment
               </label>
             </div>
-          </div>
+          </div> */}
 
           <button
             onClick={handlePurchase}

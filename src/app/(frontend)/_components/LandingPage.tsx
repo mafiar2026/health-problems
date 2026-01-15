@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Header from '@/components/Header'
 import AgeMaintainEbook from './AgeMaintainEbook'
 import CTASection from './CTASection'
 import Features from './Features'
@@ -21,8 +22,10 @@ import SpecialPricing from './SpecialPricing'
 const LandingPage = ({ page }: { page: any }) => {
   return (
     <div>
-      <div className="hero-bg">
-        <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
+      <div className="hero-bg pt-20">
+        <Header />
+
+        <div className="max-w-7xl px-6 w-full flex flex-col justify-center items-center mx-auto">
           <HeroSection page={page} />
         </div>
       </div>
@@ -36,29 +39,29 @@ const LandingPage = ({ page }: { page: any }) => {
           <SectionTwo page={page} />
         </div>
       </div>
-      <div className="bg-gradient-to-br from-primary/10 to-accent/10 bg-gray-500">
+      <div className="bg-gray-900">
         <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
           <SectionThree page={page} />
         </div>
       </div>
-      <div className=" bg-gray-700">
+      <div className=" bg-gray-800">
         <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
           <SectionFour page={page} />
         </div>
       </div>
-      <div className=" bg-gray-500">
+      <div className=" bg-dark-light">
         <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
           <SectionFive page={page} />
         </div>
       </div>
-      <div className=" bg-gray-800">
+      <div className=" bg-dark">
         <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
           <SectionSix page={page} />
         </div>
       </div>
-      <div className=" hero-bg">
+      <div className="bg-gray-900">
         <div className="max-w-7xl px-10 w-full flex flex-col justify-center items-center mx-auto">
-          <SectionSeven page={page} />
+          <SectionThree page={page} />
         </div>
       </div>
       <div className=" bg-[#1a1f3a]">
@@ -67,14 +70,22 @@ const LandingPage = ({ page }: { page: any }) => {
         </div>
       </div>
 
-      <div className="bg-(--light)">
+      <div className="bg-checkoutBg py-5">
+        <div className="max-w-7xl w-full flex flex-col justify-center items-center mx-auto">
+          {/* <ParcelInfo /> */}
+          <div id="checkout" className="sm:px-5 px-2 pb-20">
+            <ProductCheckout page={page} />{' '}
+          </div>
+        </div>
+      </div>
+      {/* <div className="bg-(--light)">
         <div className="max-w-7xl w-full flex flex-col justify-center items-center mx-auto">
           <ParcelInfo />
           <div id="checkout" className="sm:px-5 px-2 pb-20">
             <ProductCheckout page={page} />{' '}
           </div>
         </div>
-      </div>
+      </div> */}
       <div>
         {' '}
         <a

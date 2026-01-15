@@ -27,8 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="overflow-x-hidden">
         <FacebookPixel />
         <Toaster />
-        <Header />
-        <main className="overflow-x-hidden">{children}</main>
+        <main className="overflow-x-hidden">
+          {' '}
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 
 export default function SectionFive({ page }: { page: any }) {
   return (
-    <section className="py-20 bg-dark-light">
+    <section className="py-20 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div className="inline-flex items-center bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm border border-primary/30 rounded-full px-6 py-3 mb-6">

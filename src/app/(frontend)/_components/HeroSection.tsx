@@ -25,7 +25,7 @@ export default function HeroSection({ page }: { page: any }) {
   }, [images.length])
 
   return (
-    <section className="py-14">
+    <section className="py-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-5">
         {/* Left Content */}
         <div className="animate-slide-up">
@@ -136,7 +136,7 @@ export default function HeroSection({ page }: { page: any }) {
         <div className="relative animate-fade-in">
           <div className="relative z-10">
             <div className="glass-card p-8 floating-element">
-              <div className="bg-gradient-to-br from-secondary to-primary rounded-2xl p-8 text-center">
+              <div className="bg-linear-to-br from-secondary to-primary rounded-2xl p-8 text-center">
                 <svg
                   className="w-32 h-32 mx-auto mb-4 text-white"
                   fill="none"
