@@ -56,7 +56,7 @@ export default function ProductCheckout({ page }: { page: any }) {
         ? DELIVERY_CHARGE
         : 0
 
-  const fullPrice = 499
+  const fullPrice = variant?.price
 
   // Function to hash sensitive data (required by Facebook CAPI)
   const hashData = (data: string): string => {
@@ -210,33 +210,32 @@ export default function ProductCheckout({ page }: { page: any }) {
       // Send Facebook Purchase Event
       await sendInitialCheckOutEvent()
 
-      if (total === 0 || total === '0') {
-        // Original bKash payment logic
-        const response = await fetch(`/createBooking`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // Authorization: token,
-          },
-          body: JSON.stringify({
-            amount: fullPrice,
-            // callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bkash/callback`,
-            payerReference: 'booking',
-            pricingId: variant.pricingId,
-            size: variant.size || variant.sizes?.[0].size,
-            customerInfo,
-          }),
-        })
+      //   // Original bKash payment logic
+      //   const response = await fetch(`/createBooking`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       // Authorization: token,
+      //     },
+      //     body: JSON.stringify({
+      //       amount: fullPrice,
+      //       // callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bkash/callback`,
+      //       payerReference: 'booking',
+      //       pricingId: variant.pricingId,
+      //       size: variant.size || variant.sizes?.[0].size,
+      //       customerInfo,
+      //     }),
+      //   })
 
-        const data = await response.json()
+      //   const data = await response.json()
 
-        console.log('data', data)
+      //   console.log('data', data)
 
-        if (!data?.alreadyCreated) {
-          return (window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/booking-success?bookingId=${data?.booking?.bookingId}`)
-        }
-        return null
-      }
+      //   if (!data?.alreadyCreated) {
+      //     return (window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/booking-success?bookingId=${data?.booking?.bookingId}`)
+      //   }
+      //   return null
+      // }
 
       // Original bKash payment logic
       const response = await fetch(`/api/bkash/create`, {
@@ -246,11 +245,11 @@ export default function ProductCheckout({ page }: { page: any }) {
           // Authorization: token,
         },
         body: JSON.stringify({
-          amount: total,
+          amount: fullPrice,
           callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bkash/callback`,
-          payerReference: payment === 'full' ? 'full' : 'partial',
-          pricingId: variant.pricingId,
-          size: variant.size || variant.sizes?.[0].size,
+          payerReference: 'fullPrice',
+          pricingId: 'x5',
+          // size: variant.size || variant.sizes?.[0].size,
           customerInfo,
         }),
       })
@@ -403,13 +402,13 @@ export default function ProductCheckout({ page }: { page: any }) {
             </div>
             <div className="flex justify-between">
               <span>যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline × 1</span>
-              <span>৳{variant.price}</span>
+              <span>৳{fullPrice}</span>
             </div>
 
             <hr className="my-3" />
             <div className="flex justify-between ">
               <span>Subtotal</span>
-              <span>৳{variant.price}</span>
+              <span>৳{fullPrice}</span>
             </div>
             {/* <div className="flex justify-between font-semibold">
               <span>Steadfast Parcel Payment</span>
@@ -417,7 +416,7 @@ export default function ProductCheckout({ page }: { page: any }) {
             </div> */}
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>৳{total}</span>
+              <span>৳{fullPrice}</span>
             </div>
           </div>
 
@@ -471,9 +470,9 @@ export default function ProductCheckout({ page }: { page: any }) {
           <button
             onClick={handlePurchase}
             disabled={loading || !isFormValid}
-            className={`w-full bg-black text-white py-3 rounded text-lg ${loading || !isFormValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full bg-black text-white py-3  rounded text-lg ${loading || !isFormValid ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
-            {loading ? 'Processing...' : `Place Purchase — ৳${total}`}
+            {loading ? 'Processing...' : `Place Purchase — ৳${fullPrice}`}
           </button>
         </aside>
       </div>

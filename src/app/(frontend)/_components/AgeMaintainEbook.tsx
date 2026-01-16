@@ -48,8 +48,6 @@ const AgeMaintainEbook = () => {
 
   return (
     <div className="age-maintain-container">
-     
-
       {/* Problems section */}
       <section className="problems-section">
         <div className="section-header">
@@ -219,7 +217,6 @@ const AgeMaintainEbook = () => {
 
       {/* Bonus section */}
 
-
       {/* Testimonials section */}
       <section className="testimonials-section">
         <div className="section-header">
@@ -288,7 +285,7 @@ const AgeMaintainEbook = () => {
         <div className="cta-content">
           <h2>💫 এখনই বয়স ধরে রাখার গাইড সংগ্রহ করুন!</h2>
           <p className="cta-text">
-            বয়স ১০ বছর কমানোর বৈজ্ঞানিক কৌশল এখন এক ই-বুকে। সীমিত সময়ের অফার — মাত্র ৳৪৯৯ টাকায়।
+            বয়স ১০ বছর কমানোর বৈজ্ঞানিক কৌশল এখন এক ই-বুকে। সীমিত সময়ের অফার — মাত্র ৳২৪৯ টাকায়।
           </p>
           <button className="cta-button">🚀 এখনই কিনুন</button>
         </div>
@@ -316,7 +313,7 @@ const AgeMaintainEbook = () => {
 
           <div className="comparison-card ours">
             <h3>আমাদের কাছে</h3>
-            <div className="comparison-price">৳৪৯৯</div>
+            <div className="comparison-price">৳২৪৯</div>
             <ul className="comparison-list">
               <li className="positive">✅ বৈজ্ঞানিক পদ্ধতি</li>
               <li className="positive">✅ ২টি বোনাস ই-বুক</li>
@@ -415,7 +412,7 @@ const AgeMaintainEbook = () => {
           <p className="final-cta-text">
             সময় থামানো না গেলেও, তার ছাপ থামানো যায় — বিজ্ঞান জানে কিভাবে!
             <br />
-            মাত্র ৳৪৯৯ টাকায় পাচ্ছেন ৩টি প্রিমিয়াম ই-বুক।
+            মাত্র ৳২৪৯ টাকায় পাচ্ছেন ৩টি প্রিমিয়াম ই-বুক।
           </p>
 
           <div className="final-security-features">

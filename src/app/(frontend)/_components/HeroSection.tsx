@@ -3,26 +3,48 @@
 import React, { useState, useEffect } from 'react'
 
 export default function HeroSection({ page }: { page: any }) {
-  const images = page?.hero?.mainImage || []
-  const [current, setCurrent] = useState(0)
 
-  const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-  }
+  // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
+  const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1))
-  }
+  const [timeLeft, setTimeLeft] = useState({
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+  })
 
   useEffect(() => {
-    if (images.length === 0) return
+    const timer = setInterval(() => {
+      const now = new Date().getTime()
+      const distance = OFFER_END_TIME - now
 
-    const interval = setInterval(() => {
-      nextSlide()
-    }, 4000)
+      if (distance <= 0) {
+        clearInterval(timer)
+        setTimeLeft({
+          days: '00',
+          hours: '00',
+          minutes: '00',
+          seconds: '00',
+        })
+        return
+      }
 
-    return () => clearInterval(interval)
-  }, [images.length])
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
+      const minutes = Math.floor((distance / (1000 * 60)) % 60)
+      const seconds = Math.floor((distance / 1000) % 60)
+
+      setTimeLeft({
+        days: String(days).padStart(2, '0'),
+        hours: String(hours).padStart(2, '0'),
+        minutes: String(minutes).padStart(2, '0'),
+        seconds: String(seconds).padStart(2, '0'),
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <section className="py-6">
@@ -58,7 +80,7 @@ export default function HeroSection({ page }: { page: any }) {
 
               <div className="text-center">
                 <div className="text-sm text-accent bengali-text">বর্তমান দাম</div>
-                <div className="text-4xl font-bold price-highlight">৳৪৯৯</div>
+                <div className="text-4xl font-bold price-highlight">৳২৪৯</div>
               </div>
 
               <div className="bg-red-500 text-white px-4 py-2 rounded-lg text-center">
@@ -73,18 +95,15 @@ export default function HeroSection({ page }: { page: any }) {
                   ⏰ অফার শেষ হবে:
                 </span>
               </div>
-
               <div id="countdown" className="flex justify-center gap-3">
                 {[
-                  { id: 'days', label: 'দিন', value: '01' },
-                  { id: 'hours', label: 'ঘন্টা', value: '01' },
-                  { id: 'minutes', label: 'মিনিট', value: '06' },
-                  { id: 'seconds', label: 'সেকেন্ড', value: '33' },
+                  { id: 'days', label: 'দিন', value: timeLeft.days },
+                  { id: 'hours', label: 'ঘন্টা', value: timeLeft.hours },
+                  { id: 'minutes', label: 'মিনিট', value: timeLeft.minutes },
+                  { id: 'seconds', label: 'সেকেন্ড', value: timeLeft.seconds },
                 ].map((item) => (
                   <div key={item.id} className="countdown-box">
-                    <div id={item.id} className="text-2xl font-bold">
-                      {item.value}
-                    </div>
+                    <div className="text-2xl font-bold">{item.value}</div>
                     <div className="text-xs bengali-text">{item.label}</div>
                   </div>
                 ))}
@@ -94,15 +113,12 @@ export default function HeroSection({ page }: { page: any }) {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="https://digibeex.com/purchase/complete-guideline-on-sexual-health-problems/"
-              className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30"
-            >
+            <button className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30">
               <span className="flex items-center justify-center gap-2">
                 <span>🚀</span>
-                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳৪৯৯</span>
+                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳২৪৯</span>
               </span>
-            </a>
+            </button>
 
             <button className="glass-card text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all border border-white/20 hover:border-white/40 hover:bg-white/10">
               <span className="flex items-center justify-center gap-2">

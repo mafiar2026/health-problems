@@ -25,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, ProductLanding, BkashTokens, BkashPayments, Booking,DeliveryCharge],
+  collections: [Users, Media, BkashTokens, BkashPayments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -52,7 +52,7 @@ export default buildConfig({
   //     // 👇 Enable Cloudinary storage for your Media collection
   //     collections: {
   //       media: true, // or { folder: 'your-folder-name' } to group uploads
-   
+
   //     },
   //   }),
   // ],

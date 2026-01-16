@@ -1,28 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Header from '@/components/Header'
-import AgeMaintainEbook from './AgeMaintainEbook'
-import CTASection from './CTASection'
-import Features from './Features'
 import HeroSection from './HeroSection'
-import LuxurySection from './LuxurySection'
-import ParcelInfo from './ParcelInfo'
-import PricingCards from './PricingCards'
 import ProductCheckout from './ProductCheckout'
 import SectionEight from './SectionEight'
 import SectionFive from './SectionFive'
 import SectionFour from './SectionFour'
 import SectionOne from './SectionOne'
-import SectionSeven from './SectionSeven'
 import SectionSix from './SectionSix'
 import SectionThree from './SectionThree'
 import SectionTwo from './SectionTwo'
-import SizeChart from './SizeChart'
-import SpecialPricing from './SpecialPricing'
+
 
 const LandingPage = ({ page }: { page: any }) => {
   return (
     <div>
-      <div className="hero-bg pt-20">
+      <div className="hero-bg pt-20 max-sm:pt-30">
         <Header />
 
         <div className="max-w-7xl px-6 w-full flex flex-col justify-center items-center mx-auto">

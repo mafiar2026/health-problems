@@ -69,11 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    'product-landing': ProductLanding;
     'bkash-tokens': BkashToken;
     'bkash-payments': BkashPayment;
-    booking: Booking;
-    'delivery-charge': DeliveryCharge;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -83,11 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    'product-landing': ProductLandingSelect<false> | ProductLandingSelect<true>;
     'bkash-tokens': BkashTokensSelect<false> | BkashTokensSelect<true>;
     'bkash-payments': BkashPaymentsSelect<false> | BkashPaymentsSelect<true>;
-    booking: BookingSelect<false> | BookingSelect<true>;
-    'delivery-charge': DeliveryChargeSelect<false> | DeliveryChargeSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -171,50 +165,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-landing".
- */
-export interface ProductLanding {
-  id: string;
-  productName: string;
-  slug: string;
-  hero: {
-    title: string;
-    subtitle?: string | null;
-    mainImage: (string | Media)[];
-  };
-  specialPricing?:
-    | {
-        value: string;
-        title: string;
-        price: number;
-        description?: string | null;
-        offerPrice?: number | null;
-        highlight?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  pricing?:
-    | {
-        /**
-         * Internal pricing identifier (e.g. combo_1, combo_2)
-         */
-        pricingId: string;
-        label: string;
-        price: number;
-        description?: string | null;
-        saving?: string | null;
-        sizes: {
-          size?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-tokens".
  */
 export interface BkashToken {
@@ -232,12 +182,6 @@ export interface BkashToken {
 export interface BkashPayment {
   id: string;
   paymentID: string;
-  product: string | ProductLanding;
-  /**
-   * pricing.pricingId from ProductLanding
-   */
-  pricingId: string;
-  size?: string | null;
   amount?: number | null;
   currency?: string | null;
   merchantInvoiceNo?: string | null;
@@ -254,47 +198,6 @@ export interface BkashPayment {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "booking".
- */
-export interface Booking {
-  id: string;
-  bookingId: string;
-  product: string | ProductLanding;
-  /**
-   * pricing.pricingId from ProductLanding
-   */
-  pricingId: string;
-  size?: string | null;
-  amount?: number | null;
-  currency?: string | null;
-  merchantInvoiceNo?: string | null;
-  payerReference?: string | null;
-  paymentStatus?: ('Pending' | 'Completed' | 'Failed') | null;
-  user?: string | null;
-  customerInfo?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "delivery-charge".
- */
-export interface DeliveryCharge {
-  id: string;
-  deliveryCharge: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -331,24 +234,12 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'product-landing';
-        value: string | ProductLanding;
-      } | null)
-    | ({
         relationTo: 'bkash-tokens';
         value: string | BkashToken;
       } | null)
     | ({
         relationTo: 'bkash-payments';
         value: string | BkashPayment;
-      } | null)
-    | ({
-        relationTo: 'booking';
-        value: string | Booking;
-      } | null)
-    | ({
-        relationTo: 'delivery-charge';
-        value: string | DeliveryCharge;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -434,50 +325,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-landing_select".
- */
-export interface ProductLandingSelect<T extends boolean = true> {
-  productName?: T;
-  slug?: T;
-  hero?:
-    | T
-    | {
-        title?: T;
-        subtitle?: T;
-        mainImage?: T;
-      };
-  specialPricing?:
-    | T
-    | {
-        value?: T;
-        title?: T;
-        price?: T;
-        description?: T;
-        offerPrice?: T;
-        highlight?: T;
-        id?: T;
-      };
-  pricing?:
-    | T
-    | {
-        pricingId?: T;
-        label?: T;
-        price?: T;
-        description?: T;
-        saving?: T;
-        sizes?:
-          | T
-          | {
-              size?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bkash-tokens_select".
  */
 export interface BkashTokensSelect<T extends boolean = true> {
@@ -493,9 +340,6 @@ export interface BkashTokensSelect<T extends boolean = true> {
  */
 export interface BkashPaymentsSelect<T extends boolean = true> {
   paymentID?: T;
-  product?: T;
-  pricingId?: T;
-  size?: T;
   amount?: T;
   currency?: T;
   merchantInvoiceNo?: T;
@@ -504,34 +348,6 @@ export interface BkashPaymentsSelect<T extends boolean = true> {
   transactionStatus?: T;
   user?: T;
   customerInfo?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "booking_select".
- */
-export interface BookingSelect<T extends boolean = true> {
-  bookingId?: T;
-  product?: T;
-  pricingId?: T;
-  size?: T;
-  amount?: T;
-  currency?: T;
-  merchantInvoiceNo?: T;
-  payerReference?: T;
-  paymentStatus?: T;
-  user?: T;
-  customerInfo?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "delivery-charge_select".
- */
-export interface DeliveryChargeSelect<T extends boolean = true> {
-  deliveryCharge?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -20,7 +20,7 @@ export default function SectionFour({ page }: { page: any }) {
 
           <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border-l-4 border-green-600">
             <h3 className="text-lg font-bold mb-3 text-green-600">২. সুখময় যৌ*ন জীবন</h3>
-            <p className="text-gray-700 text-sm">Keys to a Joyful Sex Life</p>
+            <p className="text-gray-700 text-sm">Keys to a Joyful Se*x Life</p>
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border-l-4 border-purple-600">

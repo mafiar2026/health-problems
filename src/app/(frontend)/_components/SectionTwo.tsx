@@ -30,7 +30,7 @@ export default function SectionTwo({ page }: { page: any }) {
           </div>
 
           <div className="glass-card p-8 text-center group rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-6 text-red-600">আরও আনন্দময় জীবন গড়ুন</h3>
+            <h3 className="text-2xl font-bold mb-6 text-red-600">আনন্দময় জীবন গড়ুন</h3>
             <p className="text-gray-100 mb-6 leading-relaxed">
               দাম্পত্য জীবনে সে*ক্স লাইফকে কীভাবে শারীরিকভাবে এবং মানসিকভাবে আরও আনন্দময় করতে হয়
               তা শিখবেন।

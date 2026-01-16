@@ -15,7 +15,7 @@ const page = async () => {
         pricing: [
           {
             title: 'Basic',
-            price: 1000,
+            price: 249,
             description: 'Basic description',
           },
         ],

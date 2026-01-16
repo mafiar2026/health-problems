@@ -17,23 +17,23 @@ const BkashPayments: CollectionConfig = {
   fields: [
     { name: 'paymentID', type: 'text', required: true },
     // ✅ Relation to ProductLanding
-    {
-      name: 'product',
-      type: 'relationship',
-      relationTo: 'product-landing',
-      required: true,
-    },
+    // {
+    //   name: 'product',
+    //   type: 'relationship',
+    //   relationTo: 'product-landing',
+    //   required: true,
+    // },
 
     // ✅ Which pricing option user selected
-    {
-      name: 'pricingId',
-      type: 'text',
-      required: true,
-      admin: {
-        description: 'pricing.pricingId from ProductLanding',
-      },
-    },
-    { name: 'size', type: 'text' },
+    // {
+    //   name: 'pricingId',
+    //   type: 'text',
+    //   required: true,
+    //   admin: {
+    //     description: 'pricing.pricingId from ProductLanding',
+    //   },
+    // },
+    // { name: 'size', type: 'text' },
     { name: 'amount', type: 'number' },
     { name: 'currency', type: 'text', defaultValue: 'BDT' },
     { name: 'merchantInvoiceNo', type: 'text' },

@@ -44,7 +44,7 @@ function PriceCard({
 }) {
   return (
     <div
-      className={` p-4 rounded-xl text-center shadow-lg flex flex-col justify-center items-center w-full p-10 ${
+      className={` rounded-xl text-center shadow-lg flex flex-col justify-center items-center w-full p-10 ${
         highlight
           ? 'bg-[linear-gradient(135deg,var(--secondary),var(--accent))] text-white'
           : 'bg-white'

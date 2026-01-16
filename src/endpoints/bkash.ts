@@ -17,7 +17,7 @@ export const createPayment: Endpoint = {
 
     const payload = await getPayload()
 
-    const { amount, callbackURL, payerReference, pricingId, size, customerInfo } = payloadData
+    const { amount, callbackURL, payerReference, customerInfo } = payloadData
 
     console.log('hi_2 :', payloadData)
 
@@ -64,10 +64,11 @@ export const createPayment: Endpoint = {
         amount: data.amount,
         transactionStatus: data.transactionStatus || 'Pending',
         payerReference: payerReference || '',
-        pricingId,
-        size,
+        // pricingId,
+        // size,
         customerInfo,
       },
+      draft: true,
     })
 
     console.log('resp', payment)
