@@ -4,6 +4,16 @@ import React, { useState, useEffect } from 'react'
 
 export default function SectionEight({ page }: { page: any }) {
 
+   const handleBuyNow = () => {
+     const el = document.getElementById('checkout')
+     if (el) {
+       el.scrollIntoView({
+         behavior: 'smooth',
+         block: 'start',
+       })
+     }
+   }
+
     // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
     const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
   
@@ -115,7 +125,7 @@ export default function SectionEight({ page }: { page: any }) {
             </div>
           </div>
 
-          <button className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 rounded-full text-xl font-bold hover:scale-105 transition-all shadow-lg mb-4">
+          <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 rounded-full text-xl font-bold hover:scale-105 transition-all shadow-lg mb-4">
             🛒 এখনই কিনুন - মাত্র ৳২৪৯
           </button>
 

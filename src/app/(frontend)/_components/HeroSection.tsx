@@ -4,6 +4,16 @@ import React, { useState, useEffect } from 'react'
 
 export default function HeroSection({ page }: { page: any }) {
 
+   const handleBuyNow = () => {
+     const el = document.getElementById('checkout')
+     if (el) {
+       el.scrollIntoView({
+         behavior: 'smooth',
+         block: 'start',
+       })
+     }
+   }
+
   // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
   const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
 
@@ -113,7 +123,7 @@ export default function HeroSection({ page }: { page: any }) {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30">
+            <button onClick={handleBuyNow} className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30">
               <span className="flex items-center justify-center gap-2">
                 <span>🚀</span>
                 <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳২৪৯</span>

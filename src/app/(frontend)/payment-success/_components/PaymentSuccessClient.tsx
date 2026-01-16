@@ -14,6 +14,8 @@ export default function PaymentSuccess() {
 
   const [paymentData, setPaymentData] = useState<any>(null)
 
+  console.log('paymentData', paymentData)
+
   const status = paymentData?.transactionStatus
   const trxID = paymentData?.trxID
 
@@ -36,7 +38,7 @@ export default function PaymentSuccess() {
   const booked =
     paymentData?.transactionStatus === 'Completed' && paymentData?.payerReference === 'partial'
   const purchased =
-    paymentData?.transactionStatus === 'Completed' && paymentData?.payerReference === 'full'
+    paymentData?.transactionStatus === 'Completed' && paymentData?.payerReference === 'fullPrice'
 
   const hasSentPurchaseEvent = useRef(false)
 
@@ -125,7 +127,7 @@ export default function PaymentSuccess() {
     paymentData?.transactionStatus !== 'Completed'
   ) {
     return (
-      <div className="min-h-[50vh] bg-gray-100 flex flex-col justify-center items-center px-3 py-6">
+      <div className="min-h-[50vh] bg-gray-100 flex flex-col justify-center items-center px-3 py-6 text-black">
         <h2 className="text-2xl font-semibold">invalid page</h2>
         <button
           onClick={() => (window.location.href = '/')}
@@ -147,8 +149,46 @@ export default function PaymentSuccess() {
     price: paymentData?.productInfo?.price,
   }
 
+  const downloads = [
+    {
+      title: 'Healthy Intimate Life',
+      url: 'https://drive.google.com/file/d/1-RE0NnNuY5B2iqcRlItIYlj14KyciwUV/view',
+      type: 'main',
+    },
+    {
+      title: 'Healthy Sex Life',
+      url: 'https://drive.google.com/file/d/1RukRJ07vSxn5A3WYL3N-vNZw0ks8kxH0/view',
+      type: 'bonus',
+    },
+    {
+      title: 'The Science Of Desire',
+      url: 'https://drive.google.com/file/d/1SM1hTwqqJTTygjPVPlJCc-QPcvEwbryn/view',
+      type: 'bonus',
+    },
+    {
+      title: 'Golden Rules Of Intimacy',
+      url: 'https://drive.google.com/file/d/1YSpe-dl-sQYY0rFOm3ZqYzqpedBOXavH/view',
+      type: 'bonus',
+    },
+    {
+      title: 'Daily Intimacy Guide – Real Q&A',
+      url: 'https://drive.google.com/file/d/12s6qe5XtY2kDYLoaiorRPg3MgvW9sxfs/view',
+      type: 'bonus',
+    },
+    {
+      title: 'Erectile Dysfunction & Premature Ejaculation',
+      url: 'https://drive.google.com/file/d/17Jkwp7u144UpOwkFJv8OHZ-Z3qC-DKLc/view',
+      type: 'bonus',
+    },
+    {
+      title: 'Female Period Problems & Intimate Health',
+      url: 'https://drive.google.com/file/d/1woNy5ec65Wy9gicMSoK9deZumZvy-vHn/view',
+      type: 'bonus',
+    },
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center px-3 py-6">
+    <div className="min-h-screen bg-gray-100 flex justify-center px-3 py-6 text-black">
       <div className="w-full min px-3 max-w-md bg-white rounded-xl shadow-md overflow-hidden">
         {/* Header */}
         <div className="bg-black text-white text-center py-8">
@@ -199,7 +239,7 @@ export default function PaymentSuccess() {
                     <th className="border px-2 py-1 text-left">Product</th>
                     <th className="border px-2 py-1 text-center">Qty</th>
                     <th className="border px-2 py-1 text-right">Price (৳)</th>
-                    <th className="border px-2 py-1 text-right">Paid (৳)</th>
+                    {/* <th className="border px-2 py-1 text-right">Paid (৳)</th> */}
                     {/* <th className="border px-2 py-1 text-right">Due (৳)</th> */}
                   </tr>
                 </thead>
@@ -208,7 +248,7 @@ export default function PaymentSuccess() {
                     <td className="border px-2 py-2">1</td>
                     <td className="border px-2 py-2">{product?.name}</td>
                     <td className="border px-2 py-2 text-center">{product?.qty}</td>
-                    <td className="border px-2 py-2 text-right">{product?.price}</td>
+                    {/* <td className="border px-2 py-2 text-right">{product?.price}</td> */}
                     <td className="border px-2 py-2 text-right">{product?.paid}</td>
 
                     {/* <td className="border px-2 py-2 text-right">
@@ -231,6 +271,64 @@ export default function PaymentSuccess() {
             <p className="mt-1 break-all">
               <span className="font-medium">Transaction ID:</span> {trxID}
             </p>
+          </section>
+          {/* Download Section */}
+          <section className="space-y-6">
+            {/* bonus Downloads */}
+            <div>
+              <h2 className="font-semibold text-lg border-l-4 border-green-500 pl-3 mb-3">
+                📥 Your Downloads
+              </h2>
+
+              <ul className="space-y-2">
+                {downloads
+                  .filter((d) => d.type === 'main')
+                  .map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between bg-green-50 border border-green-200 rounded-md px-3 py-2"
+                    >
+                      <span className="text-sm font-medium">{item.title}</span>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-green-600 font-semibold hover:underline"
+                      >
+                        Download
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+
+            {/* Bonus Downloads */}
+            <div>
+              <h2 className="font-semibold text-lg border-l-4 border-yellow-400 pl-3 mb-3">
+                🎁 Bonus E-Books
+              </h2>
+
+              <ul className="space-y-2">
+                {downloads
+                  .filter((d) => d.type === 'bonus')
+                  .map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between bg-yellow-50 border border-yellow-200 rounded-md px-3 py-2"
+                    >
+                      <span className="text-sm font-medium">{item.title}</span>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-yellow-700 font-semibold hover:underline"
+                      >
+                        Download
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </section>
         </div>
       </div>
