@@ -60,7 +60,6 @@ export const createPayment: Endpoint = {
       collection: 'bkash-payments',
       data: {
         paymentID: data.paymentID,
-        product: '694c043b3c39fea58629ca3a',
         amount: data.amount,
         transactionStatus: data.transactionStatus || 'Pending',
         payerReference: payerReference || '',

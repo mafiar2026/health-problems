@@ -7,13 +7,12 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { ProductLanding } from './collections/ProductLanding'
-import { cloudinaryStorage } from 'payload-storage-cloudinary' // 🟢
+// import { cloudinaryStorage } from 'payload-storage-cloudinary' // 🟢
 import BkashTokens from './collections/BkashTokens'
 import BkashPayments from './collections/BkashPayments'
 import { bkashCallback, createPayment } from './endpoints/bkash'
-import DeliveryCharge from './collections/DeliveryCharge'
-import Booking from './collections/Booking'
+// import DeliveryCharge from './collections/DeliveryCharge'
+// import Booking from './collections/Booking'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
