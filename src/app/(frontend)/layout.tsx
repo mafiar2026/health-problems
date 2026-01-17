@@ -15,8 +15,8 @@ const playfair = Playfair_Display({
 })
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'Health Solutions',
+  title: 'Health Solutions',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
