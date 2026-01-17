@@ -42,71 +42,59 @@ export default function PaymentSuccess() {
 
   const hasSentPurchaseEvent = useRef(false)
 
-  // const sendPurchaseEvent = async () => {
-  //   const orderId = `purchase_bkash_${paymentID}_${trxID}`
+  const sendPurchaseEvent = async () => {
+    if (!paymentData) return
 
-  //   // Determine the final event name based on your logic
+    const orderId = `tt_purchase_${paymentID}_${trxID}`
 
-  //   const purchaseType = booked ? 'partial' : purchased ? 'full' : 'standard' // Your logic
+    const purchaseType = booked ? 'partial' : purchased ? 'full' : 'standard'
 
-  //   // 1. BROWSER PIXEL EVENT - Use standard name 'Purchase'
-  //   if (typeof window !== 'undefined' && window.fbq) {
-  //     window.fbq('track', 'Purchase', {
-  //       // <-- Standard event name
-  //       value: paymentData?.amount,
-  //       currency: 'BDT',
-  //       content_ids: [paymentData.id || paymentData.pricingId],
-  //       content_type: 'product',
-  //       // Custom parameter to specify the type
-  //       purchase_type: purchaseType, // <-- Your custom detail here
-  //       // CRITICAL for deduplication
-  //       eventID: orderId,
-  //     })
-  //   }
+    // Build product contents array
+    const contents = [
+      {
+        content_type: 'product',
+        content_id: paymentData.id || paymentData.pricingId,
+        content_name: paymentData.productInfo?.label,
+        price: paymentData.productInfo?.price,
+        quantity: 1,
+      },
+    ]
 
-  //   // const serverEventName = booked ? 'Partial Purchase' : purchased ? 'Full Purchase' : 'Purchase' // Your custom logic for server
+    // Build payload for your API route
+    const eventData = {
+      event_name: 'Purchase', // TikTok standard event
+      event_id: orderId,
+      value: paymentData?.amount,
+      currency: 'BDT',
+      contents, // <-- array of purchased items
+      customer: {
+        name: paymentData?.customerInfo.name,
+        email: paymentData?.customerInfo.email,
+        phone: paymentData?.customerInfo.phone,
+        address: paymentData?.customerInfo.address,
+      },
+      extra: {
+        purchase_type: purchaseType, // optional custom info
+        productPrice: paymentData?.productInfo?.price,
+        size: paymentData?.size,
+      },
+    }
 
-  //   // Send data in the correct structure for your backend to process
-  //   const eventData = {
-  //     event_name: 'Purchase', // Use snake_case
-  //     event_id: orderId,
-  //     // Pass required web parameters. Your backend will hash 'phone'.
-  //     customer_info: {
-  //       name: paymentData?.customerInfo.name,
-  //       phone: paymentData?.customerInfo.phone,
-  //       address: paymentData?.customerInfo.address,
-  //     },
-  //     currency: 'BDT',
-  //     value: paymentData?.amount,
-  //     // due:,
-  //     // Facebook will read standard fields like 'content_ids' from custom_data
-  //     custom_data: {
-  //       purchase_type: purchaseType,
-  //       content_ids: [paymentData.id || paymentData.pricingId],
-  //       content_type: 'product',
-  //       // You can keep other fields; they may be ignored but won't break the call.
-  //       product_name: paymentData?.productInfo.label,
-  //       size: paymentData.size,
-  //       productPrice: paymentData?.productInfo.price,
-  //       // delivery_charge: DELIVERY_CHARGE,
-  //     },
-  //   }
+    console.log('🔵 Sending TikTok Purchase Event:', eventData)
 
-  //   console.log('eventData', eventData)
+    try {
+      const res = await fetch('/fb-conversion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventData),
+      })
 
-  //   try {
-  //     const response = await fetch('/fb-conversion', {
-  //       // Ensure endpoint is correct
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(eventData), // Send the new structure
-  //     })
-  //     const result = await response.json()
-  //     console.log('Event sent:', result)
-  //   } catch (error) {
-  //     console.error('Failed to send event:', error)
-  //   }
-  // }
+      const result = await res.json()
+      console.log('🟢 TikTok API Response:', result)
+    } catch (err) {
+      console.error('Failed to send TikTok Purchase Event:', err)
+    }
+  }
 
   useEffect(() => {
     if (!paymentID) return
@@ -115,7 +103,7 @@ export default function PaymentSuccess() {
     if (!paymentData.trxID) return
 
     if ((purchased || booked) && !hasSentPurchaseEvent.current) {
-      // sendPurchaseEvent()
+      sendPurchaseEvent()
       hasSentPurchaseEvent.current = true
     }
   }, [paymentID, paymentData, purchased, booked])

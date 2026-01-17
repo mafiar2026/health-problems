@@ -36,6 +36,8 @@ export default function ProductCheckout({ page }: { page: any }) {
     email?: string
   }>({})
 
+  console.log('customerInfo', customerInfo)
+
   // useEffect(() => {
   //   ;(async () => {
   //     try {
@@ -65,51 +67,9 @@ export default function ProductCheckout({ page }: { page: any }) {
     return btoa(data) // Replace with actual SHA-256 implementation
   }
 
-  // Example: ViewContent event (call on product page mount)
-  // const sendViewContentEvent = async () => {
-  //   const eventId = `view_${variant.id}_${Date.now()}`
+  const generateEventId = (prefix: string) =>
+    `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`
 
-  //   // 1. Send Browser Pixel Event
-  //   if (typeof window !== 'undefined' && window.fbq) {
-  //     window.fbq('track', 'ViewContent', {
-  //       content_ids: [variant.id],
-  //       content_name: variant.label,
-  //       content_type: 'product',
-  //       currency: 'BDT',
-  //       value: variant.price,
-  //       // CRITICAL for deduplication
-  //       eventID: eventId,
-  //     })
-  //   }
-
-  //   // 2. Your existing server-side CAPI call (keep this)
-  //   const eventData = {
-  //     event_name: 'ViewContent',
-  //     event_id: eventId, // Same ID as above
-  //     customer_info: {
-  //       name: customerInfo.name,
-  //       phone: customerInfo.phone,
-  //       address: customerInfo.address,
-  //     },
-  //     custom_data: {
-  //       variant,
-  //       content_name: variant.label,
-  //       content_ids: [variant.id],
-  //       content_type: 'product',
-  //       currency: 'BDT',
-  //       value: variant.price,
-  //     },
-  //   }
-  //   await fetch('/fb-conversion', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(eventData),
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   sendViewContentEvent()
-  // }, [])
   // Facebook Conversions API Event Function
   // Updated sendInitialCheckOutEvent function in ProductCheckout component
   // const sendInitialCheckOutEvent = async () => {
@@ -188,81 +148,89 @@ export default function ProductCheckout({ page }: { page: any }) {
     }
   }
 
+  // --- TikTok Server Event Helper ---
+  const sendTikTokEvent = async (eventName: string) => {
+    const eventId = generateEventId(eventName.toLowerCase().replace(/\s/g, '_'))
+
+    // Browser pixel (optional)
+    if (typeof window !== 'undefined' && (window as any).ttq) {
+      ;(window as any).ttq.track(eventName, {
+        content_id: variant.id,
+        content_name: variant.label,
+        content_type: 'product',
+        currency: 'BDT',
+        value: variant.price,
+        event_id: eventId,
+      })
+    }
+
+    // Server-side TikTok Events API
+    await fetch('/fb-conversion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_name: eventName,
+        event_id: eventId,
+        value: variant.price,
+        currency: 'BDT',
+        contents: [
+          {
+            content_id: variant.id,
+            content_name: variant.label,
+            content_type: 'product',
+            price: variant.price,
+            quantity: 1,
+          },
+        ],
+        customer: customerInfo,
+      }),
+    })
+  }
+
+  // --- Send ViewContent on mount ---
+  useEffect(() => {
+    sendTikTokEvent('ViewContent')
+  }, [])
+
+  // --- Handle Purchase / Initiate Checkout ---
   const handlePurchase = async () => {
+    const newErrors = {
+      name: validateField('name', customerInfo.name),
+      address: validateField('address', customerInfo.address),
+      phone: validateField('phone', customerInfo.phone),
+      email: validateField('email', customerInfo.email),
+    }
+    if (Object.values(newErrors).some(Boolean)) {
+      setErrors(newErrors)
+      return
+    }
+    setErrors({})
     setLoading(true)
 
     try {
-      const newErrors = {
-        name: validateField('name', customerInfo.name),
-        address: validateField('address', customerInfo.address),
-        phone: validateField('phone', customerInfo.phone),
-        email: validateField('email', customerInfo.email),
-      }
-
-      if (newErrors.name || newErrors.address || newErrors.phone || newErrors.email) {
-        setErrors(newErrors)
-        setLoading(false)
-        return
-      }
-
-      setErrors({})
-
-      // Send Facebook Purchase Event
-      // await sendInitialCheckOutEvent()
-
-      //   // Original bKash payment logic
-      //   const response = await fetch(`/createBooking`, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       // Authorization: token,
-      //     },
-      //     body: JSON.stringify({
-      //       amount: fullPrice,
-      //       // callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bkash/callback`,
-      //       payerReference: 'booking',
-      //       pricingId: variant.pricingId,
-      //       size: variant.size || variant.sizes?.[0].size,
-      //       customerInfo,
-      //     }),
-      //   })
-
-      //   const data = await response.json()
-
-      //   console.log('data', data)
-
-      //   if (!data?.alreadyCreated) {
-      //     return (window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/booking-success?bookingId=${data?.booking?.bookingId}`)
-      //   }
-      //   return null
-      // }
+      // Send TikTok InitiateCheckout event
+      await sendTikTokEvent('InitiateCheckout')
 
       // Original bKash payment logic
-      const response = await fetch(`/api/bkash/create`, {
+      const response = await fetch('/api/bkash/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: token,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: fullPrice,
           callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bkash/callback`,
           payerReference: 'fullPrice',
-          pricingId: 'x5',
-          // size: variant.size || variant.sizes?.[0].size,
+          pricingId: variant.pricingId || variant.id,
           customerInfo,
         }),
       })
-
       const data = await response.json()
-
       if (data?.statusMessage === 'Successful' && data?.bkashURL) {
         window.location.href = data.bkashURL
       } else {
         alert('Failed to initiate bKash payment: ' + JSON.stringify(data.error || data))
       }
     } catch (error) {
-      console.error('Error initiating bKash payment:', error)
+      console.error(error)
       alert('Something went wrong while processing payment.')
     } finally {
       setLoading(false)
