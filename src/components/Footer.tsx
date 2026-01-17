@@ -52,7 +52,7 @@ export default function Footer() {
                 <div className="max-w-[150px]">
                   <img
                     src="https://supabeex.com/upload/images/logo.png"
-                    alt="Skillnest"
+                    alt="Vynteex"
                     className="w-full h-auto object-contain"
                   />
                 </div>
@@ -120,7 +120,7 @@ export default function Footer() {
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
-                  <span className="text-sm">info@skillnest.com</span>
+                  <span className="text-sm">info@vynteex.xyz</span>
                 </div>
 
                 <div className="flex items-center">
@@ -142,7 +142,7 @@ export default function Footer() {
                       d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.559-.499-.948-.737-1.182C10.232 4.032 10.076 4 10 4z"
                     />
                   </svg>
-                  <span className="text-sm">www.Skillnest.com</span>
+                  <span className="text-sm">www.vynteex.com</span>
                 </div>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default function Footer() {
           {/* Bottom */}
           <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
             <p>
-              © {new Date().getFullYear()} Skillnest. All rights reserved. | Made with ❤️ in
+              © {new Date().getFullYear()} Vynteex. All rights reserved. | Made with ❤️ in
               Bangladesh
             </p>
           </div>

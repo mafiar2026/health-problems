@@ -8,7 +8,7 @@ export default function SectionFive({ page }: { page: any }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div className="inline-flex items-center bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm border border-primary/30 rounded-full px-6 py-3 mb-6">
-            <span className="text-accent font-semibold bengali-text">🎯 কেন Skillnest ই-বুক?</span>
+            <span className="text-accent font-semibold bengali-text">🎯 কেন Vynteex ই-বুক?</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bengali-text">
             প্রিমিয়াম <span className="price-highlight">ফিচারসমূহ</span>

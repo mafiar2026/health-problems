@@ -3,58 +3,57 @@
 import React, { useState, useEffect } from 'react'
 
 export default function SectionEight({ page }: { page: any }) {
+  const handleBuyNow = () => {
+    const el = document.getElementById('checkout')
+    if (el) {
+      el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }
 
-   const handleBuyNow = () => {
-     const el = document.getElementById('checkout')
-     if (el) {
-       el.scrollIntoView({
-         behavior: 'smooth',
-         block: 'start',
-       })
-     }
-   }
+  // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
+  const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
 
-    // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
-    const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
-  
-    const [timeLeft, setTimeLeft] = useState({
-      days: '00',
-      hours: '00',
-      minutes: '00',
-      seconds: '00',
-    })
-  
-    useEffect(() => {
-      const timer = setInterval(() => {
-        const now = new Date().getTime()
-        const distance = OFFER_END_TIME - now
-  
-        if (distance <= 0) {
-          clearInterval(timer)
-          setTimeLeft({
-            days: '00',
-            hours: '00',
-            minutes: '00',
-            seconds: '00',
-          })
-          return
-        }
-  
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
-        const minutes = Math.floor((distance / (1000 * 60)) % 60)
-        const seconds = Math.floor((distance / 1000) % 60)
-  
+  const [timeLeft, setTimeLeft] = useState({
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+  })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date().getTime()
+      const distance = OFFER_END_TIME - now
+
+      if (distance <= 0) {
+        clearInterval(timer)
         setTimeLeft({
-          days: String(days).padStart(2, '0'),
-          hours: String(hours).padStart(2, '0'),
-          minutes: String(minutes).padStart(2, '0'),
-          seconds: String(seconds).padStart(2, '0'),
+          days: '00',
+          hours: '00',
+          minutes: '00',
+          seconds: '00',
         })
-      }, 1000)
-  
-      return () => clearInterval(timer)
-    }, [])
+        return
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
+      const minutes = Math.floor((distance / (1000 * 60)) % 60)
+      const seconds = Math.floor((distance / 1000) % 60)
+
+      setTimeLeft({
+        days: String(days).padStart(2, '0'),
+        hours: String(hours).padStart(2, '0'),
+        minutes: String(minutes).padStart(2, '0'),
+        seconds: String(seconds).padStart(2, '0'),
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
   return (
     <section className="py-20 bg-dark-light">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -80,7 +79,7 @@ export default function SectionEight({ page }: { page: any }) {
               </ul>
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-4 bengali-text text-accent">Skillnest </h3>
+              <h3 className="text-xl font-semibold mb-4 bengali-text text-accent">Vynteex </h3>
               <div className="text-4xl font-bold price-highlight mb-2">৳২৪৯</div>
               <ul className="text-sm text-green-400 space-y-1">
                 <li className="bengali-text">✅ ৭ টি সম্পূর্ণ ই-বুক</li>
@@ -125,7 +124,10 @@ export default function SectionEight({ page }: { page: any }) {
             </div>
           </div>
 
-          <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 rounded-full text-xl font-bold hover:scale-105 transition-all shadow-lg mb-4">
+          <button
+            onClick={handleBuyNow}
+            className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 rounded-full text-xl font-bold hover:scale-105 transition-all shadow-lg mb-4"
+          >
             🛒 এখনই কিনুন - মাত্র ৳২৪৯
           </button>
 
