@@ -1,60 +1,20 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import CountDownTimer from './CountDownTimer'
 
 export default function HeroSection({ page }: { page: any }) {
+  // console.log(page)
 
-   const handleBuyNow = () => {
-     const el = document.getElementById('checkout')
-     if (el) {
-       el.scrollIntoView({
-         behavior: 'smooth',
-         block: 'start',
-       })
-     }
-   }
-
-  // 🔥 COUNTDOWN TARGET (example: 24 hours from now)
-  const OFFER_END_TIME = new Date().getTime() + 2 * 24 * 60 * 60 * 1000
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: '00',
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-  })
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime()
-      const distance = OFFER_END_TIME - now
-
-      if (distance <= 0) {
-        clearInterval(timer)
-        setTimeLeft({
-          days: '00',
-          hours: '00',
-          minutes: '00',
-          seconds: '00',
-        })
-        return
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
-      const minutes = Math.floor((distance / (1000 * 60)) % 60)
-      const seconds = Math.floor((distance / 1000) % 60)
-
-      setTimeLeft({
-        days: String(days).padStart(2, '0'),
-        hours: String(hours).padStart(2, '0'),
-        minutes: String(minutes).padStart(2, '0'),
-        seconds: String(seconds).padStart(2, '0'),
+  const handleBuyNow = () => {
+    const el = document.getElementById('checkout')
+    if (el) {
+      el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
       })
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
+    }
+  }
 
   return (
     <section className="py-6">
@@ -97,36 +57,19 @@ export default function HeroSection({ page }: { page: any }) {
                 <div className="text-sm font-bold bengali-text">৯৭% সাশ্রয়</div>
               </div>
             </div>
-
             {/* Countdown Timer */}
-            <div className="countdown-modern">
-              <div className="text-center mb-4">
-                <span className="text-lg font-semibold bengali-text text-accent">
-                  ⏰ অফার শেষ হবে:
-                </span>
-              </div>
-              <div id="countdown" className="flex justify-center gap-3">
-                {[
-                  { id: 'days', label: 'দিন', value: timeLeft.days },
-                  { id: 'hours', label: 'ঘন্টা', value: timeLeft.hours },
-                  { id: 'minutes', label: 'মিনিট', value: timeLeft.minutes },
-                  { id: 'seconds', label: 'সেকেন্ড', value: timeLeft.seconds },
-                ].map((item) => (
-                  <div key={item.id} className="countdown-box">
-                    <div className="text-2xl font-bold">{item.value}</div>
-                    <div className="text-xs bengali-text">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <CountDownTimer />
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <button onClick={handleBuyNow} className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30">
+            <button
+              onClick={handleBuyNow}
+              className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold hover:scale-105 transition-all shadow-2xl border-2 border-primary/30 hover:border-accent/50 hover:shadow-primary/30"
+            >
               <span className="flex items-center justify-center gap-2">
                 <span>🚀</span>
-                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳২৪৯</span>
+                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳{0}</span>
               </span>
             </button>
 
