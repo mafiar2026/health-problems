@@ -69,7 +69,7 @@ export default function HeroSection({ page }: { page: any }) {
             >
               <span className="flex items-center justify-center gap-2">
                 <span>🚀</span>
-                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳{0}</span>
+                <span className="whitespace-nowrap">ইনস্ট্যান্ট ডাউনলোড - ৳{bdPrice}</span>
               </span>
             </button>
 
