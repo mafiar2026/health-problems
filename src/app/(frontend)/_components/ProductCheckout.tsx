@@ -128,7 +128,7 @@ export default function ProductCheckout({ page }: { page: any }) {
         content_ids: [variant.id || variant.pricingId],
         content_type: 'product',
         currency: 'BDT',
-        value: total,
+        value: fullPrice,
         num_items: 1,
         eventID: eventId,
       })
@@ -136,11 +136,11 @@ export default function ProductCheckout({ page }: { page: any }) {
 
     // 2. TikTok Pixel (browser)
     if (typeof window !== 'undefined' && (window as any).ttq) {
-      ;(window as any).ttq.track('InitiateCheckout', {
+      ;;(window as any).ttq.track('InitiateCheckout', {
         content_id: variant.id || variant.pricingId,
         content_type: 'product',
         currency: 'BDT',
-        value: total,
+        value: fullPrice,
         quantity: 1,
       })
     }
@@ -152,7 +152,7 @@ export default function ProductCheckout({ page }: { page: any }) {
       event_id: eventId,
       customer_info: customerInfo,
       currency: 'BDT',
-      value: total,
+      value: fullPrice,
       custom_data: {
         variant,
         content_ids: [variant.id || variant.pricingId],
@@ -170,7 +170,7 @@ export default function ProductCheckout({ page }: { page: any }) {
       platform: 'tiktok',
       event_name: 'InitiateCheckout',
       event_id: eventId,
-      value: total,
+      value: fullPrice,
       currency: 'BDT',
       contents: [
         {
