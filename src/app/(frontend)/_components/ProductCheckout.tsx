@@ -1,25 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { sendGTMEvent } from '@next/third-parties/google'
 import { useEffect, useState } from 'react'
-
-// const variants = [
-//   { id: 'turtleneck_black_single', label: 'Black – Single', price: 1200 },
-//   { id: 'turtleneck_white_single', label: 'Black – Combo 2', price: 2000 },
-//   { id: 'turtleneck_black_combo_3', label: 'Black – Combo 3', price: 2500 },
-//   { id: 'turtleneck_white_single', label: 'White – Single', price: 1200 },
-//   { id: 'turtleneck_white_combo_2', label: 'White – Combo 2', price: 2000 },
-//   { id: 'turtleneck_white_combo_3', label: 'White – Combo 3', price: 2500 },
-// ]
-
-// const sizes = ['S', 'M', 'L', 'XL', 'XXL']
 
 export default function ProductCheckout({ page }: { page: any }) {
   const data = page?.pricing
-  console.log('data', data)
   const [variant, setVariant] = useState(data[0])
-  // console.log('variant', variant)
   const [payment, setPayment] = useState<'partial' | 'full' | 'pickup'>('partial')
   const [deliveryCharge, setDeliveryCharge] = useState(99)
   const [loading, setLoading] = useState(false)
@@ -36,20 +22,6 @@ export default function ProductCheckout({ page }: { page: any }) {
     email?: string
   }>({})
 
-  console.log('customerInfo', customerInfo)
-
-  // useEffect(() => {
-  //   ;(async () => {
-  //     try {
-  //       const deliveryCharge = await fetch(`/getDeliveryCharge`)
-  //       const deliveryChargeData = await deliveryCharge.json()
-  //       setDeliveryCharge(deliveryChargeData)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   })()
-  // }, [])
-
   const DELIVERY_CHARGE = deliveryCharge
   const total =
     payment === 'full'
@@ -57,76 +29,186 @@ export default function ProductCheckout({ page }: { page: any }) {
       : payment === 'partial'
         ? DELIVERY_CHARGE
         : 0
-
   const fullPrice = variant?.price
-
-  // Function to hash sensitive data (required by Facebook CAPI)
-  const hashData = (data: string): string => {
-    // This is a simplified example - implement proper SHA-256 hashing
-    // In production, use: crypto.subtle.digest('SHA-256', ...)
-    return btoa(data) // Replace with actual SHA-256 implementation
-  }
 
   const generateEventId = (prefix: string) =>
     `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`
 
-  // Facebook Conversions API Event Function
-  // Updated sendInitialCheckOutEvent function in ProductCheckout component
-  // const sendInitialCheckOutEvent = async () => {
-  //   const checkoutId = `initial_checkout_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  // ===== BOTH PLATFORMS EVENT FUNCTIONS =====
 
-  //   // 1. Send Browser Pixel Event
-  //   if (typeof window !== 'undefined' && window.fbq) {
-  //     window.fbq('track', 'InitiateCheckout', {
-  //       // Note: Event name is one word
-  //       content_ids: [variant.id || variant.pricingId],
-  //       content_type: 'product',
-  //       currency: 'BDT',
-  //       value: total,
-  //       num_items: 1, // Consider adding the actual item count
-  //       eventID: checkoutId, // Same ID as server event
-  //     })
-  //   }
+  // Send ViewContent to both platforms
+  const sendViewContentEvents = async () => {
+    const eventId = generateEventId('view_content')
 
-  //   // Send data in the correct structure for your backend to process
-  //   const eventData = {
-  //     event_name: 'Initiate Checkout', // Use snake_case
-  //     event_id: checkoutId,
-  //     // Pass required web parameters. Your backend will hash 'phone'.
-  //     customer_info: {
-  //       name: customerInfo.name,
-  //       phone: customerInfo.phone,
-  //       address: customerInfo.address,
-  //     },
-  //     currency: 'BDT',
-  //     value: total,
-  //     // Facebook will read standard fields like 'content_ids' from custom_data
-  //     custom_data: {
-  //       variant,
-  //       content_ids: [variant.id || variant.pricingId],
-  //       content_type: 'product',
-  //       // You can keep other fields; they may be ignored but won't break the call.
-  //       product_name: variant.label,
-  //       size: variant.size || variant.sizes?.[0].size,
-  //       product_price: variant.price,
-  //       delivery_charge: DELIVERY_CHARGE,
-  //     },
-  //   }
+    // 1. Facebook Pixel (browser)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'ViewContent', {
+        content_ids: [variant.id || variant.pricingId],
+        content_name: variant.label,
+        content_type: 'product',
+        currency: 'BDT',
+        value: variant.price,
+        eventID: eventId,
+      })
+    }
 
-  //   try {
-  //     const response = await fetch('/fb-conversion', {
-  //       // Ensure endpoint is correct
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(eventData), // Send the new structure
-  //     })
-  //     const result = await response.json()
-  //     console.log('Event sent:', result)
-  //   } catch (error) {
-  //     console.error('Failed to send event:', error)
-  //   }
-  // }
+    // 2. TikTok Pixel (browser)
+    if (typeof window !== 'undefined' && (window as any).ttq) {
+      ;(window as any).ttq.track('ViewContent', {
+        content_id: variant.id || variant.pricingId,
+        content_type: 'product',
+        currency: 'BDT',
+        value: variant.price,
+      })
+    }
 
+    // 3. Facebook Server Event
+    const facebookEventData = {
+      platform: 'facebook',
+      event_name: 'ViewContent',
+      event_id: eventId,
+      customer_info: customerInfo,
+      currency: 'BDT',
+      value: variant.price,
+      custom_data: {
+        variant,
+        content_ids: [variant.id || variant.pricingId],
+        content_type: 'product',
+        product_name: variant.label,
+        size: variant.size || variant.sizes?.[0]?.size,
+        product_price: variant.price,
+      },
+    }
+
+    // 4. TikTok Server Event
+    const tiktokEventData = {
+      platform: 'tiktok',
+      event_name: 'ViewContent',
+      event_id: eventId,
+      value: variant.price,
+      currency: 'BDT',
+      contents: [
+        {
+          content_id: variant.id || variant.pricingId,
+          content_name: variant.label,
+          content_type: 'product',
+          price: variant.price,
+          quantity: 1,
+        },
+      ],
+      customer: customerInfo,
+    }
+
+    // Send both events in parallel
+    try {
+      await Promise.all([
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(facebookEventData),
+        }),
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tiktokEventData),
+        }),
+      ])
+    } catch (error) {
+      console.error('Error sending ViewContent events:', error)
+    }
+  }
+
+  // Send InitiateCheckout to both platforms
+  const sendInitiateCheckoutEvents = async () => {
+    const eventId = generateEventId('initiate_checkout')
+
+    // 1. Facebook Pixel (browser)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'InitiateCheckout', {
+        content_ids: [variant.id || variant.pricingId],
+        content_type: 'product',
+        currency: 'BDT',
+        value: total,
+        num_items: 1,
+        eventID: eventId,
+      })
+    }
+
+    // 2. TikTok Pixel (browser)
+    if (typeof window !== 'undefined' && (window as any).ttq) {
+      ;(window as any).ttq.track('InitiateCheckout', {
+        content_id: variant.id || variant.pricingId,
+        content_type: 'product',
+        currency: 'BDT',
+        value: total,
+        quantity: 1,
+      })
+    }
+
+    // 3. Facebook Server Event
+    const facebookEventData = {
+      platform: 'facebook',
+      event_name: 'InitiateCheckout',
+      event_id: eventId,
+      customer_info: customerInfo,
+      currency: 'BDT',
+      value: total,
+      custom_data: {
+        variant,
+        content_ids: [variant.id || variant.pricingId],
+        content_type: 'product',
+        product_name: variant.label,
+        size: variant.size || variant.sizes?.[0]?.size,
+        product_price: variant.price,
+        delivery_charge: DELIVERY_CHARGE,
+        num_items: 1,
+      },
+    }
+
+    // 4. TikTok Server Event
+    const tiktokEventData = {
+      platform: 'tiktok',
+      event_name: 'InitiateCheckout',
+      event_id: eventId,
+      value: total,
+      currency: 'BDT',
+      contents: [
+        {
+          content_id: variant.id || variant.pricingId,
+          content_name: variant.label,
+          content_type: 'product',
+          price: variant.price,
+          quantity: 1,
+        },
+      ],
+      customer: customerInfo,
+    }
+
+    // Send both events in parallel
+    try {
+      await Promise.all([
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(facebookEventData),
+        }),
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tiktokEventData),
+        }),
+      ])
+    } catch (error) {
+      console.error('Error sending InitiateCheckout events:', error)
+    }
+  }
+
+  // Send on component mount
+  useEffect(() => {
+    sendViewContentEvents()
+  }, [])
+
+  // ===== FORM VALIDATION =====
   const validateField = (field: 'name' | 'address' | 'phone' | 'email', value: string) => {
     switch (field) {
       case 'name':
@@ -148,51 +230,7 @@ export default function ProductCheckout({ page }: { page: any }) {
     }
   }
 
-  // --- TikTok Server Event Helper ---
-  const sendTikTokEvent = async (eventName: string) => {
-    const eventId = generateEventId(eventName.toLowerCase().replace(/\s/g, '_'))
-
-    // Browser pixel (optional)
-    if (typeof window !== 'undefined' && (window as any).ttq) {
-      ;(window as any).ttq.track(eventName, {
-        content_id: variant.id,
-        content_name: variant.label,
-        content_type: 'product',
-        currency: 'BDT',
-        value: variant.price,
-        event_id: eventId,
-      })
-    }
-
-    // Server-side TikTok Events API
-    await fetch('/fb-conversion', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        event_name: eventName,
-        event_id: eventId,
-        value: variant.price,
-        currency: 'BDT',
-        contents: [
-          {
-            content_id: variant.id,
-            content_name: variant.label,
-            content_type: 'product',
-            price: variant.price,
-            quantity: 1,
-          },
-        ],
-        customer: customerInfo,
-      }),
-    })
-  }
-
-  // --- Send ViewContent on mount ---
-  useEffect(() => {
-    sendTikTokEvent('ViewContent')
-  }, [])
-
-  // --- Handle Purchase / Initiate Checkout ---
+  // ===== PURCHASE HANDLER =====
   const handlePurchase = async () => {
     const newErrors = {
       name: validateField('name', customerInfo.name),
@@ -200,16 +238,18 @@ export default function ProductCheckout({ page }: { page: any }) {
       phone: validateField('phone', customerInfo.phone),
       email: validateField('email', customerInfo.email),
     }
+
     if (Object.values(newErrors).some(Boolean)) {
       setErrors(newErrors)
       return
     }
+
     setErrors({})
     setLoading(true)
 
     try {
-      // Send TikTok InitiateCheckout event
-      await sendTikTokEvent('InitiateCheckout')
+      // Send InitiateCheckout events to both platforms
+      await sendInitiateCheckoutEvents()
 
       // Original bKash payment logic
       const response = await fetch('/api/bkash/create', {
@@ -223,6 +263,7 @@ export default function ProductCheckout({ page }: { page: any }) {
           customerInfo,
         }),
       })
+
       const data = await response.json()
       if (data?.statusMessage === 'Successful' && data?.bkashURL) {
         window.location.href = data.bkashURL
@@ -240,6 +281,7 @@ export default function ProductCheckout({ page }: { page: any }) {
   const isFormValid =
     customerInfo.name && customerInfo.address && /^01\d{9}$/.test(customerInfo.phone)
 
+  // Rest of your JSX remains the same...
   return (
     <div className="w-[95%] pb-10 bg-transparent mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 px-6 borer rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden">
       {/* LEFT */}

@@ -1,21 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useSearchParams } from 'next/navigation'
 import { CheckCircle } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-// import { useEffect } from 'react'
-// import { getPayload } from '@/lib/payload'
 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams()
-
   const paymentID = searchParams.get('paymentID')
-
   const [paymentData, setPaymentData] = useState<any>(null)
-
-  console.log('paymentData', paymentData)
-
   const status = paymentData?.transactionStatus
   const trxID = paymentData?.trxID
 
@@ -25,7 +17,6 @@ export default function PaymentSuccess() {
       try {
         const payment = await fetch(`/getPaymentInfo?paymentID=${paymentID}`)
         const paymentData = await payment.json()
-
         setPaymentData(paymentData)
       } catch (error) {
         console.log(error)
@@ -33,23 +24,20 @@ export default function PaymentSuccess() {
     })()
   }, [paymentID])
 
-  console.log('payment', paymentData)
-
   const booked =
     paymentData?.transactionStatus === 'Completed' && paymentData?.payerReference === 'partial'
   const purchased =
     paymentData?.transactionStatus === 'Completed' && paymentData?.payerReference === 'fullPrice'
-
   const hasSentPurchaseEvent = useRef(false)
 
-  const sendPurchaseEvent = async () => {
+  // Send Purchase events to both platforms
+  const sendPurchaseEvents = async () => {
     if (!paymentData) return
 
-    const orderId = `tt_purchase_${paymentID}_${trxID}`
-
+    const orderId = `purchase_${paymentID}_${trxID}`
     const purchaseType = booked ? 'partial' : purchased ? 'full' : 'standard'
 
-    // Build product contents array
+    // Product contents for both platforms
     const contents = [
       {
         content_type: 'product',
@@ -60,13 +48,58 @@ export default function PaymentSuccess() {
       },
     ]
 
-    // Build payload for your API route
-    const eventData = {
-      event_name: 'Purchase', // TikTok standard event
+    // 1. Facebook Pixel (browser)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'Purchase', {
+        value: paymentData?.amount,
+        currency: 'BDT',
+        content_ids: [paymentData.id || paymentData.pricingId],
+        content_type: 'product',
+        purchase_type: purchaseType,
+        eventID: orderId,
+      })
+    }
+
+    // 2. TikTok Pixel (browser)
+    if (typeof window !== 'undefined' && (window as any).ttq) {
+      ;(window as any).ttq.track('PlaceAnOrder', {
+        value: paymentData?.amount,
+        currency: 'BDT',
+        contents: contents,
+      })
+    }
+
+    // 3. Facebook Server Event
+    const facebookEventData = {
+      platform: 'facebook',
+      event_name: 'Purchase',
+      event_id: orderId,
+      customer_info: {
+        name: paymentData?.customerInfo.name,
+        phone: paymentData?.customerInfo.phone,
+        address: paymentData?.customerInfo.address,
+        email: paymentData?.customerInfo.email,
+      },
+      currency: 'BDT',
+      value: paymentData?.amount,
+      custom_data: {
+        purchase_type: purchaseType,
+        content_ids: [paymentData.id || paymentData.pricingId],
+        content_type: 'product',
+        product_name: paymentData?.productInfo?.label,
+        size: paymentData?.size,
+        productPrice: paymentData?.productInfo?.price,
+      },
+    }
+
+    // 4. TikTok Server Event
+    const tiktokEventData = {
+      platform: 'tiktok',
+      event_name: 'PlaceAnOrder', // TikTok uses 'PlaceAnOrder' for purchase
       event_id: orderId,
       value: paymentData?.amount,
       currency: 'BDT',
-      contents, // <-- array of purchased items
+      contents: contents,
       customer: {
         name: paymentData?.customerInfo.name,
         email: paymentData?.customerInfo.email,
@@ -74,36 +107,39 @@ export default function PaymentSuccess() {
         address: paymentData?.customerInfo.address,
       },
       extra: {
-        purchase_type: purchaseType, // optional custom info
+        purchase_type: purchaseType,
         productPrice: paymentData?.productInfo?.price,
         size: paymentData?.size,
       },
     }
 
-    console.log('🔵 Sending TikTok Purchase Event:', eventData)
-
+    // Send both events
     try {
-      const res = await fetch('/fb-conversion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(eventData),
-      })
-
-      const result = await res.json()
-      console.log('🟢 TikTok API Response:', result)
-    } catch (err) {
-      console.error('Failed to send TikTok Purchase Event:', err)
+      await Promise.all([
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(facebookEventData),
+        }),
+        fetch('/fb-conversion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tiktokEventData),
+        }),
+      ])
+      console.log('Purchase events sent to both platforms')
+    } catch (error) {
+      console.error('Error sending purchase events:', error)
     }
   }
 
   useEffect(() => {
-    if (!paymentID) return
-    if (!paymentData) return
+    if (!paymentID || !paymentData) return
     if (paymentData.transactionStatus !== 'Completed') return
     if (!paymentData.trxID) return
 
     if ((purchased || booked) && !hasSentPurchaseEvent.current) {
-      sendPurchaseEvent()
+      sendPurchaseEvents()
       hasSentPurchaseEvent.current = true
     }
   }, [paymentID, paymentData, purchased, booked])
