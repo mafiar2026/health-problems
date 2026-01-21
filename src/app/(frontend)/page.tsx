@@ -16,7 +16,7 @@ const page = async () => {
           {
             id: 'যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline',
             label: 'যৌ*ন স্বাস্থ্য সমস্যা ও সমাধানের Complete Guideline',
-            price: 249,
+            price: 149,
             // description: 'Basic description',
           },
         ],
