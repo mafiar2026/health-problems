@@ -123,16 +123,16 @@ export default function ProductCheckout({ page }: { page: any }) {
     const eventId = generateEventId('initiate_checkout')
 
     // 1. Facebook Pixel (browser)
-    if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('track', 'InitiateCheckout', {
-        content_ids: [variant.id || variant.pricingId],
-        content_type: 'product',
-        currency: 'BDT',
-        value: fullPrice,
-        num_items: 1,
-        eventID: eventId,
-      })
-    }
+    // if (typeof window !== 'undefined' && window.fbq) {
+    //   window.fbq('track', 'InitiateCheckout', {
+    //     content_ids: [variant.id || variant.pricingId],
+    //     content_type: 'product',
+    //     currency: 'BDT',
+    //     value: fullPrice,
+    //     num_items: 1,
+    //     eventID: eventId,
+    //   })
+    // }
 
     // 2. TikTok Pixel (browser)
     if (typeof window !== 'undefined' && (window as any).ttq) {
